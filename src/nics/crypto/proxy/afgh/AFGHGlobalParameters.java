@@ -27,7 +27,7 @@ import java.util.logging.Logger;
  *
  * @author david
  */
-public class GlobalParameters {
+public class AFGHGlobalParameters {
 
     private int rBits, qBits;
     private Pairing e;
@@ -38,11 +38,11 @@ public class GlobalParameters {
     private CurveParameters curveParams;
     private Random random;
 
-    public GlobalParameters(DefaultCurveParameters curveParameters){
+    public AFGHGlobalParameters(DefaultCurveParameters curveParameters){
         initialize(curveParameters);
     }
 
-    public GlobalParameters(int r, int q) {
+    public AFGHGlobalParameters(int r, int q) {
         rBits = r;
         qBits = q;
         
@@ -58,21 +58,21 @@ public class GlobalParameters {
         initialize(curveParams);
     }
 
-    public GlobalParameters(InputStream is){
+    public AFGHGlobalParameters(InputStream is){
         curveParams = new DefaultCurveParameters();
         ((DefaultCurveParameters) curveParams).load(is);
         initialize(curveParams);
     }
 
-    public GlobalParameters(File f) throws FileNotFoundException{
+    public AFGHGlobalParameters(File f) throws FileNotFoundException{
         this(new FileInputStream(f));
     }
 
-    public GlobalParameters(byte[] b){
+    public AFGHGlobalParameters(byte[] b){
         this(new String(b));
     }
 
-    public GlobalParameters(String cp){
+    public AFGHGlobalParameters(String cp){
         try {
             curveParams = new DefaultCurveParameters();
             
@@ -80,7 +80,7 @@ public class GlobalParameters {
             ((DefaultCurveParameters) curveParams).load(is);
             initialize(curveParams);
         } catch (Exception ex) {
-            Logger.getLogger(GlobalParameters.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AFGHGlobalParameters.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

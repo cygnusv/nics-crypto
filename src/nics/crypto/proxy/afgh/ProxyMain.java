@@ -33,7 +33,7 @@ public class ProxyMain {
         int rBits = 256; //160;    // 20 bytes
         int qBits = 1536; //512;    // 64 bytes
 
-        GlobalParameters global = new GlobalParameters(rBits, qBits);
+        AFGHGlobalParameters global = new AFGHGlobalParameters(rBits, qBits);
 
         medirTiempoMicroSegundos();
 
@@ -138,11 +138,11 @@ public class ProxyMain {
 
         // Secret keys
 
-        Element sk_a = AFGH.generateSecretKey(global);
+        Element sk_a = AFGHProxyReEncryption.generateSecretKey(global);
 
         medirTiempoMicroSegundos();
 
-        Element sk_b = AFGH.generateSecretKey(global);
+        Element sk_b = AFGHProxyReEncryption.generateSecretKey(global);
 
         medirTiempoMicroSegundos();
 
@@ -152,11 +152,11 @@ public class ProxyMain {
 
         // Public keys
 
-        Element pk_a = AFGH.generatePublicKey(sk_a, global);
+        Element pk_a = AFGHProxyReEncryption.generatePublicKey(sk_a, global);
 
         medirTiempoMicroSegundos();
 
-        Element pk_b = AFGH.generatePublicKey(sk_b, global);
+        Element pk_b = AFGHProxyReEncryption.generatePublicKey(sk_b, global);
 
         medirTiempoMicroSegundos();
 
@@ -166,16 +166,16 @@ public class ProxyMain {
 
         // Re-Encryption Key
 
-        Element rk_a_b = AFGH.generateReEncryptionKey(pk_b, sk_a);
+        Element rk_a_b = AFGHProxyReEncryption.generateReEncryptionKey(pk_b, sk_a);
 
         medirTiempoMicroSegundos();
 
         String message = "12345678901234567890123456789012";
-        Element m = AFGH.stringToElement(message, global.getG2());
+        Element m = AFGHProxyReEncryption.stringToElement(message, global.getG2());
 
         medirTiempoMicroSegundos();
 
-        Tuple c_a = AFGH.secondLevelEncryption(m, pk_a_ppp, global);
+        Tuple c_a = AFGHProxyReEncryption.secondLevelEncryption(m, pk_a_ppp, global);
 
         medirTiempoMicroSegundos();
 
@@ -183,11 +183,11 @@ public class ProxyMain {
 
         medirTiempoMicroSegundos();
 
-        Tuple c_b = AFGH.reEncryption(c_a, rk_a_b, e_ppp);
+        Tuple c_b = AFGHProxyReEncryption.reEncryption(c_a, rk_a_b, e_ppp);
 
         medirTiempoMicroSegundos();
 
-        Element m2 = AFGH.firstLevelDecryptionPreProcessing(c_b, sk_b_inverse, global);
+        Element m2 = AFGHProxyReEncryption.firstLevelDecryptionPreProcessing(c_b, sk_b_inverse, global);
 
         medirTiempoMicroSegundos();
 

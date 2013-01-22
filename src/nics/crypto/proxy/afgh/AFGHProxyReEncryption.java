@@ -16,9 +16,9 @@ import nics.crypto.Tuple;
  *
  * @author david
  */
-public class AFGH {
+public class AFGHProxyReEncryption {
 
-    public static Element generateSecretKey(GlobalParameters global) {
+    public static Element generateSecretKey(AFGHGlobalParameters global) {
 
         Field Zq = global.getZq();
 
@@ -33,7 +33,7 @@ public class AFGH {
 //    public static byte[] generateSecretKey(GlobalParameters global) {
 //        return generateSecretKey(global).toBytes();
 //    }
-    public static Element generatePublicKey(Element sk, GlobalParameters global) {
+    public static Element generatePublicKey(Element sk, AFGHGlobalParameters global) {
 
         ElementPowPreProcessing g = global.getG_ppp();
 
@@ -41,7 +41,7 @@ public class AFGH {
         return g.powZn(sk).getImmutable();
     }
 
-    public static byte[] generatePublicKey(byte[] sk_bytes, GlobalParameters global) {
+    public static byte[] generatePublicKey(byte[] sk_bytes, AFGHGlobalParameters global) {
 
         Element sk = bytesToElement(sk_bytes, global.getZq());
 
@@ -60,13 +60,13 @@ public class AFGH {
 
     }
 
-    public static byte[] generateReEncryptionKey(byte[] pk_bytes, byte[] sk_bytes, GlobalParameters global) {
+    public static byte[] generateReEncryptionKey(byte[] pk_bytes, byte[] sk_bytes, AFGHGlobalParameters global) {
         return generateReEncryptionKey(
                 bytesToElement(pk_bytes, global.getG1()),
                 bytesToElement(sk_bytes, global.getZq())).toBytes();
     }
 
-    public static byte[] firstLevelEncryption(byte[] message, byte[] pk_a, GlobalParameters global) {
+    public static byte[] firstLevelEncryption(byte[] message, byte[] pk_a, AFGHGlobalParameters global) {
 
         Field G2 = global.getG2();
         Field G1 = global.getG1();
@@ -83,7 +83,7 @@ public class AFGH {
 
     }
 
-    public static Tuple firstLevelEncryption(Element m, Element pk_a, GlobalParameters global) {
+    public static Tuple firstLevelEncryption(Element m, Element pk_a, AFGHGlobalParameters global) {
 
         /*
          * First Level Encryption
@@ -122,7 +122,7 @@ public class AFGH {
 
     }
 
-    public static byte[] secondLevelEncryption(byte[] message, byte[] pk_a, GlobalParameters global) {
+    public static byte[] secondLevelEncryption(byte[] message, byte[] pk_a, AFGHGlobalParameters global) {
 
         Field G2 = global.getG2();
         Field G1 = global.getG1();
@@ -146,7 +146,7 @@ public class AFGH {
 
     }
 
-    public static Tuple secondLevelEncryption(Element m, Element pk_a, GlobalParameters global) {
+    public static Tuple secondLevelEncryption(Element m, Element pk_a, AFGHGlobalParameters global) {
 
         /*
          * Second Level Encryption
@@ -185,7 +185,7 @@ public class AFGH {
     }
 
 
-    public static Tuple secondLevelEncryption(Element m, ElementPowPreProcessing pk_a_PPP, GlobalParameters global) {
+    public static Tuple secondLevelEncryption(Element m, ElementPowPreProcessing pk_a_PPP, AFGHGlobalParameters global) {
 
         /*
          * Second Level Encryption
@@ -225,7 +225,7 @@ public class AFGH {
 
     }
 
-    public static Tuple reEncryption(Tuple c, Element rk, GlobalParameters global) {
+    public static Tuple reEncryption(Tuple c, Element rk, AFGHGlobalParameters global) {
 
         /*
          * Re-Encryption
@@ -251,7 +251,7 @@ public class AFGH {
 
     }
 
-    public static byte[] reEncryption(byte[] c, byte[] rk, GlobalParameters global) {
+    public static byte[] reEncryption(byte[] c, byte[] rk, AFGHGlobalParameters global) {
         //System.out.println("R: " + Arrays.toString(c));
         // c1 \in G1, c2 \in G2
         Field G1 = global.getG1();
@@ -272,7 +272,7 @@ public class AFGH {
 
     }
 
-    public static Element firstLevelDecryption(Tuple c, Element sk, GlobalParameters global) {
+    public static Element firstLevelDecryption(Tuple c, Element sk, AFGHGlobalParameters global) {
         // c1, c2 \in G2
         Element alpha = c.get(1);
         Element beta = c.get(2);
@@ -284,7 +284,7 @@ public class AFGH {
         return m;
     }
 
-    public static Element firstLevelDecryptionPreProcessing(Tuple c, Element sk_inverse, GlobalParameters global) {
+    public static Element firstLevelDecryptionPreProcessing(Tuple c, Element sk_inverse, AFGHGlobalParameters global) {
         // c1, c2 \in G2
         Element alpha = c.get(1);
         Element beta = c.get(2);
@@ -294,7 +294,7 @@ public class AFGH {
         return m;
     }
 
-    public static byte[] firstLevelDecryption(byte[] b, byte[] sk, GlobalParameters global) {
+    public static byte[] firstLevelDecryption(byte[] b, byte[] sk, AFGHGlobalParameters global) {
         //System.out.println(Arrays.toString(b));
 
         // c1, c2 \in G2
@@ -322,7 +322,7 @@ public class AFGH {
         return m.toBytes();
     }
 
-    public static byte[] secondLevelDecryption(byte[] b, byte[] sk, GlobalParameters global) {
+    public static byte[] secondLevelDecryption(byte[] b, byte[] sk, AFGHGlobalParameters global) {
         // c1 \in G1, c2 \in G2
         Field G1 = global.getG1();
         Field G2 = global.getG2();
@@ -344,7 +344,7 @@ public class AFGH {
 
     }
 
-    public static Element secondLevelDecryption(Tuple c, Element sk, GlobalParameters global) {
+    public static Element secondLevelDecryption(Tuple c, Element sk, AFGHGlobalParameters global) {
 
         Element alpha = c.get(1);
         Element beta = c.get(2);
@@ -357,7 +357,7 @@ public class AFGH {
         return m;
     }
 
-    public static Element decryption(Tuple c, Element sk, GlobalParameters global) {
+    public static Element decryption(Tuple c, Element sk, AFGHGlobalParameters global) {
         Field G2 = global.getG2();
 
         // if c1 \in G2 then First-Level
@@ -392,6 +392,7 @@ public class AFGH {
 
     public static int bytesToElement(byte[] b, Element x, int offset) {
 
+        
 
         offset += x.setFromBytes(b, offset);
 
